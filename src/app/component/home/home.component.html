@@ -55,11 +55,12 @@
                                                 <!-- Portfolio Modal - Text-->
                                                 
                                                 <p class="mb-4">Nombre de piéces: {{ box.pieces }}<br>
+                                                    <br>
                                                     Saveurs : {{ box.saveurs }} <br>
                                                     Aliments : <br>
                                                 </p>
                                                 <div *ngFor="let aliment of box.aliments">
-                                                    Nom :{{ aliment.nom }}<br>
+                                                    {{ aliment.nom }}<br>
                                                     Qauntité: {{aliment.quantite}}<br><br>
                                                 </div>
                                                 <button class="btn btn-primary" data-bs-dismiss="modal">
