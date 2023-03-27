@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LookupBoxService } from 'src/app/service/lookup-box.service';
 import { Box } from 'src/app/models/Box';
-import * as BOX  from 'boxes-sushi.json';
 import { ManagerBoxService } from 'src/app/service/manager-box.service';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-home',

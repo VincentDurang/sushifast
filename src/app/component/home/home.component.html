@@ -1,20 +1,19 @@
 <header>
-    <div
-            class="p-5 text-center bg-image"
-            style="background-image: url('https://media.discordapp.net/attachments/1051428575296892958/1086761248374394884/sushihead.png');height: 450px;">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="text-center text-white">
+    <div class="p-5 text-center bg-image"
+        style="background-image: url('https://media.discordapp.net/attachments/1051428575296892958/1086761248374394884/sushihead.png');height: 450px;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-center text-white">
 
-                    <h1 class="mb-3">SushiShop®</h1>
+                <h1 class="mb-3">SushiShop®</h1>
 
-                </div>
             </div>
         </div>
+    </div>
 </header>
 
 <!-- Section-->
 <section class="py-5">
-    
+
     <div class="text-center text-white">
         <h3 class="mb-3"> Nos box :</h3>
     </div>
@@ -22,14 +21,16 @@
 
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-            <div class="col mb-5"  *ngFor="let box of boxes" >
+            <div class="col mb-5" *ngFor="let box of boxes; let i = index">
+
                 <div class="card h-100">
                     <!-- Product image-->
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#modal1">
-            <img class="card-img-top" src="http://localhost:8080/api/image/{{ box.image }}" alt="..." />  
-                    </div>    
-                     <!-- Modal -->
-                     <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1" aria-hidden="true">
+                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
+                        <img class="card-img-top" src="http://localhost:8080/api/image/{{ box.image }}" alt="..." />
+                    </div>
+                    <!-- Modal -->
+                    
+                    <div class="modal fade" [attr.id]="'modal' + i" tabindex="-1" aria-labelledby="'modal' + i" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header border-0"><button class="btn-close" type="button"
@@ -39,8 +40,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-lg-8">
                                                 <!-- Modal - Title-->
-                                                <h2
-                                                    class="portfolio-modal-title text-secondary text-uppercase mb-0">
+                                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">
                                                     Détails :</h2>
                                                 <!-- Icon Divider-->
                                                 <div class="divider-custom">
@@ -52,14 +52,15 @@
                                                 <!-- Portfolio Modal - Image-->
                                                 <!--<img class="img-fluid rounded mb-5" src="" alt="..." />-->
                                                 <!-- Portfolio Modal - Text-->
+                                                
                                                 <p class="mb-4">Nombre de piéces: {{ box.pieces }}<br>
-                                                    Saveurs : {{ box.saveurs }}<br>
+                                                    Saveurs : {{ box.saveurs }} <br>
                                                     Aliments : <br>
                                                 </p>
-                                                    <div *ngFor="let aliment of box.aliments"> 
-                                                        Nom :{{ aliment.nom }}<br>
-                                                        Qauntité: {{aliment.quantite}}<br><br>
-                                                    </div>
+                                                <div *ngFor="let aliment of box.aliments">
+                                                    Nom :{{ aliment.nom }}<br>
+                                                    Qauntité: {{aliment.quantite}}<br><br>
+                                                </div>
                                                 <button class="btn btn-primary" data-bs-dismiss="modal">
                                                     <i class="fas fa-xmark fa-fw"></i>
                                                     fermer
@@ -77,14 +78,16 @@
                             <!-- Product name-->
                             <h5 class="fw-bolder">{{ box.nom }}</h5>
                             <!-- Product reviews-->
-                            
+
                             <!-- Product price-->
                             {{ box.prix }}€
                         </div>
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><button type="button" class="btn btn-outline-primary"><a  class="nav-link" aria-current="page" data-bs-toggle="modal" data-bs-target="#modal1">Détails</a></button></div>
+                        <div class="text-center"><button type="button" class="btn btn-outline-primary"><a
+                                    class="nav-link" aria-current="page" data-bs-toggle="modal"
+                                    data-bs-target="#modal1">Détails</a></button></div>
                     </div>
                 </div>
             </div>
@@ -93,23 +96,23 @@
 </section>
 
 <div class="container mt-5">
-  
+
     <h2>Angular Display Data from Json File Example</h2>
-    
+
     <table class="table table-striped">
-      <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Username</th>
-          </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let box of boxes">
-          <td>{{ box.id }}</td>
-          <td>{{ box.nom }}</td>
-          <td>{{ box.prix }}</td>
-        </tr>
-      </tbody>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let box of boxes">
+                <td>{{ box.id }}</td>
+                <td>{{ box.nom }}</td>
+                <td>{{ box.prix }}</td>
+            </tr>
+        </tbody>
     </table>
-  </div>
+</div>
