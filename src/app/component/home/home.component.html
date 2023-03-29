@@ -109,6 +109,7 @@
                                     {{ box.prix }}€
                                 </div>
                             </div>
+                            
                         </div>
                         <!-- Product actions-->
                         <div aria-current="page" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
@@ -120,8 +121,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="text-center text-light">
+                            <button type="button" class="btn btn-outline-secondary bg-light" (click)="addToCart(box)">
+                              <a>Ajouter au panier</a>
+                            </button>
+                          </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </section>

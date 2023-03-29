@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Box } from 'src/app/models/Box';
-import { IBoxs } from 'src/app/models/iBoxes';
-import { ManagerBoxService } from 'src/app/service/manager-box.service';
+import { CartService } from 'src/app/service/cart.service';
 
 @Component({
   selector: 'app-panier',
@@ -9,19 +8,16 @@ import { ManagerBoxService } from 'src/app/service/manager-box.service';
   styleUrls: ['./panier.component.css']
 })
 export class PanierComponent {
+  items: Box[]
 
-  
-  constructor(private managerBoxService: ManagerBoxService) {
-  
-  }
+  constructor(private cartService: CartService) {
+    this.items = cartService.getItems();
+    cartService.updateNewEvent.subscribe( ( items: Box[]) =>{
+      this.items= items
+  })
+   }
 
-
-  ngOnInit(): void {
-    this.managerBoxService.editHackerEvent
-      .subscribe((box: IBoxs) => { 
-        console.log('Event message editEvent')
-      
-        
-      })
+  removeFromCart(index: number) {
+    this.items.splice(index, 1);
   }
 }
