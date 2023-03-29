@@ -30,7 +30,7 @@
                     <div class="card text-dark bg-dark mb-3">
                         <!-- Product image-->
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
-                            <img class="card-img-top" src="http://localhost:8080/api/image/{{ box.image }}" alt="..." />
+                            <img class="card-img-top" src="{{imageLink}}{{ box.image }}" alt="..." />
                         </div>
                         <!-- Modal -->
 
@@ -117,6 +117,7 @@
                                     <button type="button" class="btn btn-outline-secondary bg-light">
                                         <a>Détails</a>
                                     </button>
+                                    <button type="button" class="btn btn-success m-2 d-inline"  >Ajouter au panier</button>
                                 </div>
                             </div>
                         </div>

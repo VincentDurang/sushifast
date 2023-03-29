@@ -18,8 +18,8 @@ export class ManagerBoxService {
 
   }
 
-  @Output() editHackerEvent = new EventEmitter<IBoxs>()
-  @Output() updateHackersListEvent = new EventEmitter<IBoxs[]>()
+  @Output() editPanier = new EventEmitter<IBoxs>()
+  @Output() updatePanierEvent = new EventEmitter<IBoxs[]>()
   
   getAllBoxes() : Observable<any> {
    return this.http.get(environment.apiBaseUrl+'api/boxes')
@@ -32,7 +32,7 @@ export class ManagerBoxService {
   setBoxes(box: Box) {
     let boxes = this.getAllBoxes();
     localStorage.setItem('box', JSON.stringify(boxes));
-    this.updateHackersListEvent.emit(this.boxes)
+    this.updatePanierEvent.emit(this.boxes)
   }
 }
 

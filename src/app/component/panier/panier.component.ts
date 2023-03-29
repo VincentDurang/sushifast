@@ -16,12 +16,12 @@ export class PanierComponent {
   }
 
 
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.managerBoxService.editHackerEvent
       .subscribe((box: IBoxs) => { 
         console.log('Event message editEvent')
       
         
       })
-  }
+  }*/
 }
