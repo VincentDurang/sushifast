@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Box } from 'src/app/models/Box';
 import { ManagerBoxService } from 'src/app/service/manager-box.service';
-import { A11yModule } from '@angular/cdk/a11y';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +11,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 })
 export class HomeComponent implements OnInit {
   boxes: Box[] = [];
+  ApiImagesUrl= environment.ApiImagesUrl;
 
   constructor(private boxService: ManagerBoxService) { }
 

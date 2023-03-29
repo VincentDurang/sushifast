@@ -30,7 +30,7 @@
                     <div class="card text-dark bg-dark mb-3">
                         <!-- Product image-->
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
-                            <img class="card-img-top" src="http://localhost:8080/api/image/{{ box.image }}" alt="..." />
+                            <img class="card-img-top" src="{{ ApiImagesUrl }}{{ box.image }}" alt="..." />
                         </div>
                         <!-- Modal -->
 
