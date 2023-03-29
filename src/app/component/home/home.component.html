@@ -18,18 +18,16 @@
     <!-- Section-->
 
 
-    <section class="py-5">
+    <section class="py-5 bg-dark">
 
-        <div class="text-center text-dark">
-            <h3 class="mb-3"> Nos box :</h3>
-        </div>
+      
         <div class="container px-4 px-lg-5 mt-5">
 
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
                 <div class="col mb-5" *ngFor="let box of boxes; let i = index">
 
-                    <div class="card text-dark bg-white mb-3">
+                    <div class="card text-dark bg-dark mb-3">
                         <!-- Product image-->
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
                             <img class="card-img-top" src="http://localhost:8080/api/image/{{ box.image }}" alt="..." />
@@ -41,7 +39,7 @@
                             <!-- <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1" aria-hidden="true"> -->
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header border-0"><button class="btn-close" type="button"
+                                    <div class="modal-header border-0 bg-light"><button class="btn-close" type="button"
                                             data-bs-dismiss="modal" aria-label="Close"></button></div>
                                     <div class="modal-body text-center pb-5">
                                         <div class="container">
@@ -100,11 +98,11 @@
                             </div>
                         </div>
                         <!-- Product details-->
-                        <div class="text-dark">
+                        <div class="text-light">
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ box.nom }}</h5>
+                                    <h6 class="fw-bolder ">{{ box.nom }}</h6>
                                     <!-- Product reviews-->
 
                                     <!-- Product price-->
@@ -115,8 +113,8 @@
                         <!-- Product actions-->
                         <div aria-current="page" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center text-dark">
-                                    <button type="button" class="btn btn-outline-secondary">
+                                <div class="text-center text-light">
+                                    <button type="button" class="btn btn-outline-secondary bg-light">
                                         <a>Détails</a>
                                     </button>
                                 </div>
