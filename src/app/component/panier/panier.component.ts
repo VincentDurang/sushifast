@@ -31,7 +31,7 @@ export class PanierComponent implements OnInit {
 
   getUniqueCart(): Box[] {
     return this.cart.filter((value, index, array) => 
-      array.findIndex(t => t.id === value.id) === index
+      array.findIndex(find => find.id === value.id) === index
     );
   }
 
@@ -44,11 +44,16 @@ export class PanierComponent implements OnInit {
     }, 0);
   }
 
-  removeFromCart(index: number) {
-    this.cart.splice(index, 1);
-    this.uniqueCart = this.getUniqueCart();
-    this.calculateTotal();
+  removeFromCart(box: Box) {
+    const index = this.cart.findIndex(b => b.id === box.id);
+  
+    if (index !== -1) {
+      this.cart.splice(index, 1);
+      this.uniqueCart = this.getUniqueCart();
+      this.calculateTotal();
+    }
   }
+  
   addToCart(box: Box) {
     this.cart.push(box);
     this.uniqueCart = this.getUniqueCart();
