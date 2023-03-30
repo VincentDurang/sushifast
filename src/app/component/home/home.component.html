@@ -18,7 +18,7 @@
     <!-- Section-->
 
 
-    <section class="py-5 bg-dark">
+    <section class="py-5 bg-dark-footer">
 
       
         <div class="container px-4 px-lg-5 mt-5">
@@ -27,7 +27,7 @@
 
                 <div class="col mb-5" *ngFor="let box of boxes; let i = index">
 
-                    <div class="card text-dark bg-dark mb-3">
+                    <div class="card text-dark bg-dark-footerLess mb-3">
                         <!-- Product image-->
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
                             <img class="card-img-top" src="{{imageLink}}{{ box.image }}" alt="..." />
@@ -85,10 +85,7 @@
                                                             </div>
                                                         </div>
                                                     </div><br>
-                                                    <button class="btn btn-primary" data-bs-dismiss="modal">
-                                                        <i class="fas fa-xmark fa-fw"></i>
-                                                        fermer
-                                                    </button>
+                                                 
 
                                                 </div>
                                             </div>
@@ -114,7 +111,7 @@
                         <div aria-current="page">
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                               <div class="text-center text-light">
-                                <button type="button" class="btn btn-outline-secondary bg-light" (click)="addToCart(box)">
+                                <button type="button" class="btn  bg-amazon custom-btn" (click)="addToCart(box)">
                                   <a>Ajouter au panier</a>
                                 </button>
 

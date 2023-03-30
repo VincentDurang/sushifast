@@ -11319,3 +11319,53 @@ textarea.form-control-lg {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.popup-background {
+  background-color: #ffffff; /* Couleur de fond noir */
+}
+ 
+/* Modifiez la taille et la couleur du texte du titre */
+h2 {
+ 
+    font-size: 04px;
+    color: #b53fa5;
+    font-weight: bold;
+  }
+  
+  /* Modifiez la taille et la couleur du texte du contenu */
+  mat-dialog-content {
+    
+    font-size: 20px;
+    color: #860e76;
+   
+    font-weight: bold;
+  }
+  
+  /* Personnalisez les boutons */
+  button:first-child {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: #1a1a1a;
+    color: white;
+  }
+    /* Changez la couleur de fond du bouton "Oui" lorsqu'il est survolé */
+    button:first-child:hover {
+        background-color: #d8a304;
+      }
+  
+  /* Ajoutez une couleur de fond pour le bouton "Oui" */
+  button:last-child {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: #1a1a1a;
+    color: white;
+  
+  }
+  
+  /* Changez la couleur de fond du bouton "Oui" lorsqu'il est survolé */
+  button:last-child:hover {
+    background-color: #d8a304;
+  }
+  

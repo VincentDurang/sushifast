@@ -1,34 +1,40 @@
-<section class="h-100" style="background-color: #eee;">
+<section>
   <div class="container h-100 py-5">
-    <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-10">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-normal mb-0 text-black">Panier</h3>
+          <h3 class="fw-normal mb-0 text-black">Panier :</h3>
         </div>
-
+        <hr>
 
         <div class="card rounded-3 mb-4"  *ngFor="let box of uniqueCart; let i = index" class="row">
           <div class="card-body p-4">
             <div class="row d-flex justify-content-between align-items-center">
               <div class="col-md-2 col-lg-2 col-xl-2">
-                <img class="card-img-top" src="{{imageLink}}{{ box.image }}" alt="..." />
+                <img class="card-img-top" src="{{imageLink}}{{ box.image }}" alt="..." /><button class="btn btn-secondary">{{ countOccurrences(box) }}</button>
+             
               </div>
               <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">{{ box.nom }} ({{ countOccurrences(box) }})</p>
-              </div>
+          
+                <div class="col-2">
+                  
+  
+                </div>
+                <p class="lead fw-normal mb-2">{{ box.nom }}  </p>
+<button class="btn btn-success me-3" (click)="addToCart(box)">Ajouter</button>
+<button class="btn btn-secondary" (click)="removeFromCart(box)">Retirer</button>
 
+              
+                  
+              </div>
               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">{{ box.prix * countOccurrences(box) }} €</h5>
-              </div>
+                <h5 class="mb-0">{{ (box.prix * countOccurrences(box)) | number:'1.2-2' }} €</h5> 
+            </div>
+            
+            <!-- Dans cet exemple, le pipe number est utilisé pour formater le résultat de box.prix * countOccurrences(box) avec deux chiffres après la virgule.
+               La chaîne de format '1.2-2' indique que le nombre doit avoir au moins un chiffre avant la virgule, et entre 2 et 2 chiffres après la virgule.-->
 
-              <div class="col-2">
-                <button class="btn btn-danger" (click)="removeFromCart(box)">Supprimer</button>
 
-              </div>
-              <div class="col-2">
-                <button class="btn btn-success" (click)="addToCart(box)">Ajouter</button>
-              </div>
 
               <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                 <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
@@ -39,12 +45,14 @@
 
         <div class="card">
           <div class="card-body">
-            <p class="lead fw-normal mb-2">Total: {{ total }} €</p>
-            <button type="button" class="btn btn-warning btn-block btn-lg">Valider la commande</button>
+            <p class="lead fw-normal mb-2">Total: <strong>{{ total }} €</strong></p>
+
+            
+            <button type="button" class="btn btn-warning btn-block btn-lg" (click)="saveCartToLocalStorage()">Valider la commande</button>
           </div>
         </div>
 
       </div>
     </div>
-  </div>
+
 </section>

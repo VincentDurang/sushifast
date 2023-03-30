@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ManagerBoxService } from 'src/app/service/manager-box.service';
 import { Box } from 'src/app/models/Box';
 import { environment } from 'src/environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog.component';
 
 @Component({
   selector: 'app-panier',
@@ -14,7 +16,18 @@ export class PanierComponent implements OnInit {
   total: number = 0;
   imageLink:string = environment.apiImageUrl
 
-  constructor(private boxService: ManagerBoxService) { }
+  constructor(private boxService: ManagerBoxService, public dialog: MatDialog) { }
+  
+  openConfirmationDialog() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.saveCartToLocalStorage();
+      }
+    });
+  }
+
 
   ngOnInit() {
     this.cart = this.boxService.getCart();
@@ -27,7 +40,9 @@ export class PanierComponent implements OnInit {
     for (let box of this.cart) {
       this.total += box.prix;
     }
+    this.total = parseFloat(this.total.toFixed(2));
   }
+  
 
   getUniqueCart(): Box[] {
     return this.cart.filter((value, index, array) => 
@@ -59,6 +74,19 @@ export class PanierComponent implements OnInit {
     this.uniqueCart = this.getUniqueCart();
     this.calculateTotal();
   }
+
+  saveCartToLocalStorage() {
+    console.log('saveCartToLocalStorage') 
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+    
+  }
+  loadCartFromLocalStorage() {
+    const storedCart = localStorage.getItem('panier');
+    if (storedCart) {
+      this.cart = JSON.parse(storedCart);
+    }
+  }
+  
 
  
   }

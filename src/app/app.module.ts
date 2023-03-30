@@ -10,7 +10,11 @@ import { FooterComponent } from './component/footer/footer.component';
 import { HomeComponent } from './component/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PanierComponent } from './component/panier/panier.component';
-import { FormsModule } from '@angular/forms'; // Importez FormsModule ici
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './confirmation-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 @NgModule({
@@ -19,15 +23,25 @@ import { FormsModule } from '@angular/forms'; // Importez FormsModule ici
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    PanierComponent
-  ],  
+    PanierComponent,
+    ConfirmationDialogComponent,
+
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent
+
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
