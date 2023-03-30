@@ -32,6 +32,12 @@ addToCart(box: Box) {
 getCart(): Box[] {
   return this.cart;
 }
+clearCart() {
+  this.cart = [];
+  console.log('service')
+  console.log(this.cart)
+  return this.cart;
+}
 
 
 }

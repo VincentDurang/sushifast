@@ -10,7 +10,7 @@ import { FooterComponent } from './component/footer/footer.component';
 import { HomeComponent } from './component/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PanierComponent } from './component/panier/panier.component';
-
+import { FormsModule } from '@angular/forms'; // Importez FormsModule ici
 
 
 @NgModule({
@@ -27,6 +27,7 @@ import { PanierComponent } from './component/panier/panier.component';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

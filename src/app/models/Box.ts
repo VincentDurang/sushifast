@@ -1,7 +1,6 @@
 import { IBoxs } from "./iBoxes";
 
 export class Box implements IBoxs {
-
    constructor(
        public id: number,
        public nom: string,

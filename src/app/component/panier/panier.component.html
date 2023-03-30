@@ -8,19 +8,27 @@
         </div>
 
 
-        <div class="card rounded-3 mb-4"  *ngFor="let box of cart">
+        <div class="card rounded-3 mb-4"  *ngFor="let box of uniqueCart; let i = index" class="row">
           <div class="card-body p-4">
             <div class="row d-flex justify-content-between align-items-center">
               <div class="col-md-2 col-lg-2 col-xl-2">
                 <img class="card-img-top" src="{{imageLink}}{{ box.image }}" alt="..." />
               </div>
               <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">{{ box.nom }}</p>
+                <p class="lead fw-normal mb-2">{{ box.nom }} ({{ countOccurrences(box) }})</p>
               </div>
 
               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">{{ box.prix }}</h5>
+                <h5 class="mb-0">{{ box.prix * countOccurrences(box) }} €</h5>
               </div>
+
+              <div class="col-2">
+                <button class="btn btn-danger" (click)="removeFromCart(i)">Supprimer</button>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-success" (click)="addToCart(box)">Ajouter</button>
+              </div>
+
               <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                 <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
               </div>
@@ -30,6 +38,7 @@
 
         <div class="card">
           <div class="card-body">
+            <p class="lead fw-normal mb-2">Total: {{ total }} €</p>
             <button type="button" class="btn btn-warning btn-block btn-lg">Valider la commande</button>
           </div>
         </div>
