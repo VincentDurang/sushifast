@@ -11,11 +11,25 @@ import { environment } from 'src/environments/environment';
 export class PanierComponent implements OnInit {
   cart: Box[] = [];
   imageLink:string = environment.apiImageUrl
+  total: number = 0
 
   constructor(private boxService: ManagerBoxService) { }
 
   ngOnInit() {
     this.cart = this.boxService.getCart();
+    this.calculTotal()
   }
+
+  calculTotal(){
+    this.total = 0
+    for (let box of this.cart){
+      this.total += box.prix
+    }
+  }
+  deleteBox(index: number){
+    this.cart.splice(index, 1)
+    this.calculTotal()
+  }
+  
 
 }

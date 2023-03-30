@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   boxes: Box[] = [];
   imageLink:string = environment.apiImageUrl
 
+
   constructor(private boxService: ManagerBoxService) { }
 
   ngOnInit() {
@@ -24,6 +25,11 @@ export class HomeComponent implements OnInit {
 
   addToCart(box: Box) {
     console.log("ajout panier")
-    this.boxService.addToCart(box);
+    this.boxService.addToCart(box)
+    
   }
+
+
+
+
 }

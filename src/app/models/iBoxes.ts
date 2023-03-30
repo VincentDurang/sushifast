@@ -1,5 +1,6 @@
 export interface IBoxs {
     id: number;
+    quantity: number;
     nom: string;
     pieces: number;
     prix: number;

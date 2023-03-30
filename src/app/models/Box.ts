@@ -1,10 +1,11 @@
 import { IBoxs } from "./iBoxes";
 
 export class Box implements IBoxs {
-
+  
    constructor(
        public id: number,
        public nom: string,
+       public quantity: number,
        public pieces: number,
        public prix: number,
        public image: string,
@@ -15,4 +16,5 @@ export class Box implements IBoxs {
        public saveurs: string[]){
 
        }
+  
     }
