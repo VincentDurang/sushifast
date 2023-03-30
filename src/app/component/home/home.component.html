@@ -111,13 +111,13 @@
                             </div>
                         </div>
                         <!-- Product actions-->
-                        <div aria-current="page" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
+                        <div aria-current="page">
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center text-light">
-                                    <button type="button" class="btn btn-outline-secondary bg-light">
-                                        <a>Détails</a>
-                                    </button>
-                                    <button type="button" class="btn btn-success m-2 d-inline"  >Ajouter au panier</button>
+                              <div class="text-center text-light">
+                                <button type="button" class="btn btn-outline-secondary bg-light" (click)="addToCart(box)">
+                                  <a>Ajouter au panier</a>
+                                </button>
+
                                 </div>
                             </div>
                         </div>

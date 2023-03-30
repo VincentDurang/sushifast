@@ -11,29 +11,27 @@ import { map, Observable } from 'rxjs';
 })
 export class ManagerBoxService {
  
-  
-  boxes!: Box[];
 
+  boxes!: Box[];
+  cart: Box[] = [];
   constructor(private http:HttpClient) {
 
   }
 
-  @Output() editPanier = new EventEmitter<IBoxs>()
-  @Output() updatePanierEvent = new EventEmitter<IBoxs[]>()
-  
+
   getAllBoxes() : Observable<any> {
    return this.http.get(environment.apiBaseUrl+'api/boxes')
   }
 
-  getPanier(): Box[] {
-    return JSON.parse(localStorage.getItem('box') || '[]');
-  }
+ 
 
-  setBoxes(box: Box) {
-    let boxes = this.getAllBoxes();
-    localStorage.setItem('box', JSON.stringify(boxes));
-    this.updatePanierEvent.emit(this.boxes)
-  }
+addToCart(box: Box) {
+  this.cart.push(box);
+}
+
+getCart(): Box[] {
+  return this.cart;
 }
 
 
+}

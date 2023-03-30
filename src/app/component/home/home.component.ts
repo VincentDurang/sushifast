@@ -21,4 +21,9 @@ export class HomeComponent implements OnInit {
       this.boxes = data;
     });
   }
+
+  addToCart(box: Box) {
+    console.log("ajout panier")
+    this.boxService.addToCart(box);
+  }
 }
