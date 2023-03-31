@@ -5,6 +5,7 @@ import { ManagerBoxService } from 'src/app/service/manager-box.service';
 
 import { environment } from 'src/environments/environment';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
