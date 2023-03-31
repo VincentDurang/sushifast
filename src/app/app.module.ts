@@ -15,8 +15,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,12 +23,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent,
     PanierComponent,
     ConfirmationDialogComponent,
-
   ],
-  entryComponents: [
-    ConfirmationDialogComponent
-
-  ],
+  entryComponents: [ConfirmationDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -40,11 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
-
-
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
-
+export class AppModule {}

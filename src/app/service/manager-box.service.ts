@@ -5,39 +5,29 @@ import { IBoxs } from '../models/iBoxes';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ManagerBoxService {
- 
-
   boxes!: Box[];
   cart: Box[] = [];
-  constructor(private http:HttpClient) {
+  constructor(private http: HttpClient) {}
 
+  getAllBoxes(): Observable<any> {
+    return this.http.get(environment.apiBaseUrl + 'api/boxes');
   }
 
-
-  getAllBoxes() : Observable<any> {
-   return this.http.get(environment.apiBaseUrl+'api/boxes')
+  addToCart(box: Box) {
+    this.cart.push(box);
   }
 
- 
-
-addToCart(box: Box) {
-  this.cart.push(box);
-}
-
-getCart(): Box[] {
-  return this.cart;
-}
-clearCart() {
-  this.cart = [];
-  console.log('service')
-  console.log(this.cart)
-  return this.cart;
-}
-
-
+  getCart(): Box[] {
+    return this.cart;
+  }
+  clearCart() {
+    this.cart = [];
+    console.log('service');
+    console.log(this.cart);
+    return this.cart;
+  }
 }

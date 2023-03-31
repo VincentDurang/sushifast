@@ -8,13 +8,13 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   boxes: Box[] = [];
-  imageLink:string = environment.apiImageUrl
+  imageLink: string = environment.apiImageUrl;
 
-  constructor(private boxService: ManagerBoxService) { }
+  constructor(private boxService: ManagerBoxService) {}
 
   ngOnInit() {
     this.boxService.getAllBoxes().subscribe((data) => {
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   addToCart(box: Box) {
-    console.log("ajout panier")
+    console.log('ajout panier');
     this.boxService.addToCart(box);
   }
 }

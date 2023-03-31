@@ -8,85 +8,87 @@ import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog.compone
 @Component({
   selector: 'app-panier',
   templateUrl: './panier.component.html',
-  styleUrls: ['./panier.component.css']
+  styleUrls: ['./panier.component.css'],
 })
 export class PanierComponent implements OnInit {
-  cart: Box[] = [];
+  panier: Box[] = [];
   uniqueCart: Box[] = [];
   total: number = 0;
-  imageLink:string = environment.apiImageUrl
+  imageLink: string = environment.apiImageUrl;
 
-  constructor(private boxService: ManagerBoxService, public dialog: MatDialog) { }
-  
+  constructor(
+    private boxService: ManagerBoxService,
+    public dialog: MatDialog
+  ) {}
+
   openConfirmationDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.saveCartToLocalStorage();
+        this.savePanierToLocalStorage();
       }
     });
   }
 
-
   ngOnInit() {
-    this.cart = this.boxService.getCart();
-    this.uniqueCart = this.getUniqueCart();
+    this.panier = this.boxService.getCart();
+    this.uniqueCart = this.getRegroupedBox();
     this.calculateTotal();
   }
 
   calculateTotal() {
     this.total = 0;
-    for (let box of this.cart) {
+    for (let box of this.panier) {
       this.total += box.prix;
     }
     this.total = parseFloat(this.total.toFixed(2));
+    //La méthode toFixed() retourne une chaîne de caractères représentant le nombre avec le nombre spécifié de décimales.
   }
-  
 
-  getUniqueCart(): Box[] {
-    return this.cart.filter((value, index, array) => 
-      array.findIndex(find => find.id === value.id) === index
+  getRegroupedBox(): Box[] {
+    return this.panier.filter(
+      (value, index, array) =>
+        array.findIndex((find) => find.id === value.id) === index
     );
   }
 
   countOccurrences(box: Box): number {
-    return this.cart.reduce((acc, b) => {
-      if (b.id === box.id) {
-        return acc + 1;
+    return this.panier.reduce((nbBox, occBox) => {
+      if (occBox.id === box.id) {
+        return nbBox + 1;
       }
-      return acc;
+      return nbBox;
     }, 0);
   }
 
-  removeFromCart(box: Box) {
-    const index = this.cart.findIndex(b => b.id === box.id);
-  
-    if (index !== -1) {
-      this.cart.splice(index, 1);
-      this.uniqueCart = this.getUniqueCart();
+  removeFromPanier(id: number) {
+    const index = this.panier.findIndex((box) => box.id === id);
+    if (index > -1) {
+      this.panier.splice(index, 1);
       this.calculateTotal();
     }
+    // Vérifie si le nombre d'occurrences est 0 après la suppression
+    const box = this.uniqueCart.find((b) => b.id === id);
+    if (box && this.countOccurrences(box) === 0) {
+      this.uniqueCart = this.uniqueCart.filter((b) => b.id !== id);
+    }
   }
-  
-  addToCart(box: Box) {
-    this.cart.push(box);
-    this.uniqueCart = this.getUniqueCart();
+
+  addToPanier(box: Box) {
+    this.panier.push(box);
+    this.uniqueCart = this.getRegroupedBox();
     this.calculateTotal();
   }
 
-  saveCartToLocalStorage() {
-    console.log('saveCartToLocalStorage') 
-      localStorage.setItem('cart', JSON.stringify(this.cart));
-    
+  savePanierToLocalStorage() {
+    console.log('saveCartToLocalStorage');
+    localStorage.setItem('cart', JSON.stringify(this.panier));
   }
-  loadCartFromLocalStorage() {
+  loadPanierFromLocalStorage() {
     const storedCart = localStorage.getItem('panier');
     if (storedCart) {
-      this.cart = JSON.parse(storedCart);
+      this.panier = JSON.parse(storedCart);
     }
   }
-  
-
- 
-  }
+}

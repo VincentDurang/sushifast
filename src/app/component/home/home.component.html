@@ -1,125 +1,143 @@
 <body class="mon-background">
-
-
-    <header>
-
-        <div class="p-5 text-center bg-image"
-            style="background-image: url('https://media.discordapp.net/attachments/1051428575296892958/1086761248374394884/sushihead.png');height: 450px;">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="text-center text-white">
-
-                    <h1 class="mb-3">SushiFast®</h1>
-
-                </div>
-            </div>
+  <header>
+    <div
+      class="p-5 text-center bg-image"
+      style="
+        background-image: url('https://media.discordapp.net/attachments/1051428575296892958/1086761248374394884/sushihead.png');
+        height: 450px;
+      "
+    >
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-center text-white">
+          <h1 class="mb-3">SushiFast®</h1>
         </div>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <!-- Section-->
+  <!-- Section-->
 
+  <section class="py-5 bg-dark-footer">
+    <div class="container px-4 px-lg-5 mt-5">
+      <div
+        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+      >
+        <div class="col mb-5" *ngFor="let box of boxes; let i = index">
+          <div class="card text-dark bg-dark-footerLess mb-3">
+            <!-- Product image-->
+            <div
+              class="portfolio-item mx-auto"
+              data-bs-toggle="modal"
+              [attr.data-bs-target]="'#modal' + i"
+            >
+              <img
+                class="card-img-top"
+                src="{{ imageLink }}{{ box.image }}"
+                alt="..."
+              />
+            </div>
+            <!-- Modal -->
 
-    <section class="py-5 bg-dark-footer">
-
-      
-        <div class="container px-4 px-lg-5 mt-5">
-
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-                <div class="col mb-5" *ngFor="let box of boxes; let i = index">
-
-                    <div class="card text-dark bg-dark-footerLess mb-3">
-                        <!-- Product image-->
-                        <div class="portfolio-item mx-auto" data-bs-toggle="modal" [attr.data-bs-target]="'#modal' + i">
-                            <img class="card-img-top" src="{{imageLink}}{{ box.image }}" alt="..." />
-                        </div>
-                        <!-- Modal -->
-
-                        <div class="modal fade" [attr.id]="'modal' + i" tabindex="-1" aria-labelledby="'modal' + i"
-                            aria-hidden="true">
-                            <!-- <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1" aria-hidden="true"> -->
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0 bg-light"><button class="btn-close" type="button"
-                                            data-bs-dismiss="modal" aria-label="Close"></button></div>
-                                    <div class="modal-body text-center pb-5">
-                                        <div class="container">
-                                            <div class="row justify-content-center">
-                                                <div class="col-lg-8">
-                                                    <!-- Modal - Title-->
-                                                    <h2 class="h2">
-                                                        Détails :</h2>
-                                                    <!-- Icon Divider-->
-                                                    <div class="divider-custom">
-                                                        <div class="divider-custom-line"></div>
-                                                        <div class="divider-custom-icon"><i class="fas fa-star"></i>
-                                                        </div>
-                                                        <div class="divider-custom-line"></div>
-                                                    </div>
-                                                    <!-- Portfolio Modal - Image-->
-                                                    <!--<img class="img-fluid rounded mb-5" src="" alt="..." />-->
-                                                    <!-- Portfolio Modal - Text-->
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Nombre de piéces:</h5>
-                                                            <p class="card-text"> {{ box.pieces }}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Saveurs :</h5>
-                                                            <p class="card-text">{{ box.saveurs }}</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <br>
-
-                                                    <h4 class="h3">
-                                                        Aliments :</h4>
-
-
-                                                    <div *ngFor="let aliment of box.aliments">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h5 class="card-title">{{ aliment.nom }}</h5>
-                                                                <p class="card-text">Nombre : {{aliment.quantite}}</p>
-                                                            </div>
-                                                        </div>
-                                                    </div><br>
-                                                 
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div
+              class="modal fade"
+              [attr.id]="'modal' + i"
+              tabindex="-1"
+              aria-labelledby="'modal' + i"
+              aria-hidden="true"
+            >
+              <!-- <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1" aria-hidden="true"> -->
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header border-0 bg-light">
+                    <button
+                      class="btn-close"
+                      type="button"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body text-center pb-5">
+                    <div class="container">
+                      <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                          <!-- Modal - Title-->
+                          <h2 class="h2">Détails :</h2>
+                          <!-- Icon Divider-->
+                          <div class="divider-custom">
+                            <div class="divider-custom-line"></div>
+                            <div class="divider-custom-icon">
+                              <i class="fas fa-star"></i>
                             </div>
-                        </div>
-                        <!-- Product details-->
-                        <div class="text-light">
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h6 class="fw-bolder ">{{ box.nom }}</h6>
-                                    <!-- Product reviews-->
-
-                                    <!-- Product price-->
-                                    {{ box.prix }}€
-                                </div>
+                            <div class="divider-custom-line"></div>
+                          </div>
+                          <!-- Portfolio Modal - Image-->
+                          <!--<img class="img-fluid rounded mb-5" src="" alt="..." />-->
+                          <!-- Portfolio Modal - Text-->
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Nombre de piéces:</h5>
+                              <p class="card-text">{{ box.pieces }}</p>
                             </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div aria-current="page">
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center text-light">
-                                <button type="button" class="btn  bg-amazon custom-btn" (click)="addToCart(box)">
-                                  <a>Ajouter au panier</a>
-                                </button>
-
-                                </div>
+                          </div>
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Saveurs :</h5>
+                              <p class="card-text">{{ box.saveurs }}</p>
                             </div>
+                          </div>
+
+                          <br />
+
+                          <h4 class="h3">Aliments :</h4>
+
+                          <div *ngFor="let aliment of box.aliments">
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ aliment.nom }}</h5>
+                                <p class="card-text">
+                                  Nombre : {{ aliment.quantite }}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <br />
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
+            <!-- Product details-->
+            <div class="text-light">
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <h6 class="fw-bolder">{{ box.nom }}</h6>
+                  <!-- Product reviews-->
+
+                  <!-- Product price-->
+                  {{ box.prix }}€
+                </div>
+              </div>
+            </div>
+            <!-- Product actions-->
+            <div aria-current="page">
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center text-light">
+                  <button
+                    type="button"
+                    class="btn bg-amazon custom-btn"
+                    (click)="addToCart(box)"
+                  >
+                    <a>Ajouter au panier</a>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+</body>
