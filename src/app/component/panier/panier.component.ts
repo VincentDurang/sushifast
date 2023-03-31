@@ -26,14 +26,16 @@ export class PanierComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result)
       if (result) {
         this.savePanierToLocalStorage();
       }
-    });
+    });    
   }
 
   // Initialise le composant, récupère le panier et calcule le total
   ngOnInit() {
+    this.loadPanierFromLocalStorage();
     this.panier = this.boxService.getPanier(); // Récupère le panier du service
     this.uniqueCart = this.getRegroupedBox(); // Regroupe les éléments du panier
     this.calculateTotal(); // Calcule le total du panier
@@ -90,7 +92,7 @@ export class PanierComponent implements OnInit {
 
   // Sauvegarde le panier dans le localStorage
   savePanierToLocalStorage() {
-    localStorage.setItem('cart', JSON.stringify(this.panier)); // Convertit le panier en chaîne JSON et le stocke dans le localStorage
+    localStorage.setItem('panier', JSON.stringify(this.panier)); // Convertit le panier en chaîne JSON et le stocke dans le localStorage
   }
 
   // Charge le panier depuis le localStorage
