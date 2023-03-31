@@ -11,19 +11,22 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  boxes: Box[] = [];
-  imageLink: string = environment.apiImageUrl;
+  boxes: Box[] = []; // Liste des boxes
+  imageLink: string = environment.apiImageUrl; // Lien vers les images des boxes
 
+  // Injection du service ManagerBoxService dans le composant
   constructor(private boxService: ManagerBoxService) {}
 
+  // Méthode appelée lors de l'initialisation du composant
   ngOnInit() {
-    this.boxService.getAllBoxes().subscribe((data) => {
-      this.boxes = data;
+    this.boxService.getAllBoxes().subscribe((data) => { // Récupère toutes les boxes depuis le service
+      this.boxes = data; // Affecte les données récupérées à la variable this.boxes
     });
   }
 
-  addToCart(box: Box) {
-    console.log('ajout panier');
-    this.boxService.addToCart(box);
+  // Méthode pour ajouter une box au panier
+  addToPanier(box: Box) {
+    console.log('ajout panier'); // Affiche un message dans la console
+    this.boxService.addToPanier(box); // Appelle la méthode addToCart du service avec la box en paramètre
   }
 }

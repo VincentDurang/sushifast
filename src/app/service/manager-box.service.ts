@@ -9,25 +9,32 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ManagerBoxService {
-  boxes!: Box[];
-  cart: Box[] = [];
+  boxes!: Box[]; // Liste des boxes
+  cart: Box[] = []; // Liste des boxes dans le panier
+
+  // Injection du service HttpClient dans le service
   constructor(private http: HttpClient) {}
 
+  // Récupère toutes les boxes depuis l'API
   getAllBoxes(): Observable<any> {
-    return this.http.get(environment.apiBaseUrl + 'api/boxes');
+    return this.http.get(environment.apiBaseUrl + 'api/boxes'); // Envoie une requête GET à l'API pour récupérer les boxes
   }
 
-  addToCart(box: Box) {
-    this.cart.push(box);
+  // Ajoute une box au panier
+  addToPanier(box: Box) {
+    this.cart.push(box); // Ajoute la box à la liste du panier
   }
 
-  getCart(): Box[] {
-    return this.cart;
+  // Récupère le contenu du panier
+  getPanier(): Box[] {
+    return this.cart; // Retourne la liste du panier
   }
-  clearCart() {
-    this.cart = [];
-    console.log('service');
-    console.log(this.cart);
-    return this.cart;
+  
+  // Vide le panier
+  clearPanier() {
+    this.cart = []; // Réinitialise la liste du panier à une liste vide
+    console.log('service'); // Affiche un message dans la console
+    console.log(this.cart); // Affiche le contenu du panier dans la console
+    return this.cart; // Retourne la liste du panier
   }
 }
