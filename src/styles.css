@@ -11318,4 +11318,15 @@ textarea.form-control-lg {
 }
 
 html, body { height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+  mat-dialog-content {
+    
+    font-size: 20px;
+    color: #860e76;
+   
+    font-weight: bold;
+  }
+  
+  

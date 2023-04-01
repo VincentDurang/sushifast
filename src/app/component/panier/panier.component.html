@@ -58,7 +58,10 @@
 
           <button
             type="button"
-            class="btn btn-warning btn-block btn-lg"
+            class="btn bg-amazon btn-block btn-lg custom-btn"
+
+          
+            [mat-dialog-close]="true"
             (click)="openConfirmationDialog()"
           >
             Valider la commande
