@@ -10,7 +10,7 @@ import { map, Observable } from 'rxjs';
 })
 export class ManagerBoxService {
   boxes!: Box[]; // Liste des boxes
-  cart: Box[] = []; // Liste des boxes dans le panier
+  panier: Box[] = []; // Liste des boxes dans le panier
 
   // Injection du service HttpClient dans le service
   constructor(private http: HttpClient) {}
@@ -22,19 +22,17 @@ export class ManagerBoxService {
 
   // Ajoute une box au panier
   addToPanier(box: Box) {
-    this.cart.push(box); // Ajoute la box à la liste du panier
+    this.panier.push(box); // Ajoute la box à la liste du panier
   }
 
   // Récupère le contenu du panier
   getPanier(): Box[] {
-    return this.cart; // Retourne la liste du panier
+    return this.panier; // Retourne la liste du panier
   }
   
   // Vide le panier
   clearPanier() {
-    this.cart = []; // Réinitialise la liste du panier à une liste vide
-    console.log('service'); // Affiche un message dans la console
-    console.log(this.cart); // Affiche le contenu du panier dans la console
-    return this.cart; // Retourne la liste du panier
+    this.panier = []; // Réinitialise la liste du panier à une liste vide
+    return this.panier; // Retourne la liste du panier
   }
 }

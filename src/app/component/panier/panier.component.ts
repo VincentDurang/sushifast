@@ -35,6 +35,10 @@ export class PanierComponent implements OnInit {
       console.log(result)
       if (result) {
         this.savePanierToLocalStorage();
+        this.boxService.clearPanier(); // Vide le panier
+        this.panier = []; // Met à jour la variable `panier` dans le composant
+        this.uniqueCart = []; // Met à jour la variable `uniqueCart` dans le composant
+        this.total = 0; // Réinitialise le total
       }
     });    
   }
