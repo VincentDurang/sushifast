@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
+  selector: 'app-rgpd',
+  templateUrl: './rgpd.component.html',
   styleUrls: ['../../../styles.css']
 })
-export class HeaderComponent {
+export class RgpdComponent {
 
 }

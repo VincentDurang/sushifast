@@ -8,7 +8,7 @@ import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog.compone
 @Component({
   selector: 'app-panier',
   templateUrl: './panier.component.html',
-  styleUrls: ['./panier.component.css'],
+  styleUrls: [],
 })
 export class PanierComponent implements OnInit {
   panier: Box[] = [];
@@ -23,8 +23,14 @@ export class PanierComponent implements OnInit {
 
   // Ouvre le dialogue de confirmation pour valider la commande
   openConfirmationDialog() {
+    if (this.panier.length === 0) {
+      // Si le panier est vide, afficher un message d'erreur
+      alert('Votre panier est vide, vous ne pouvez pas passer de commande.');
+      return;
+    }
+  
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result)
       if (result) {
@@ -89,15 +95,33 @@ export class PanierComponent implements OnInit {
     this.uniqueCart = this.getRegroupedBox(); // Met à jour la liste des boxes uniques
     this.calculateTotal(); // Recalcule le total
   }
+  generateUniqueId() {
+    return new Date().getTime().toString();
+  }
 
   // Sauvegarde le panier dans le localStorage
   savePanierToLocalStorage() {
-    localStorage.setItem('panier', JSON.stringify(this.panier)); // Convertit le panier en chaîne JSON et le stocke dans le localStorage
+    // Récupérer les commandes existantes du localStorage
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+    if (this.panier.length > 0) {
+      // Créer un nouvel objet de commande avec un identifiant unique et le contenu du panier
+      let newOrder = {
+        id: this.generateUniqueId(),
+        cart: this.panier,
+      };
+      console.log(this.generateUniqueId());
+
+      // Ajouter la nouvelle commande au tableau des commandes
+      orders.push(newOrder);
+    }
+    // Sauvegarder le tableau des commandes mis à jour dans le localStorage
+    localStorage.setItem('orders', JSON.stringify(orders));
   }
 
   // Charge le panier depuis le localStorage
   loadPanierFromLocalStorage() {
-    const storedCart = localStorage.getItem('panier'); // Récupère le panier stocké dans le localStorage
+    const storedCart = localStorage.getItem('orders'); // Récupère le panier stocké dans le localStorage
     if (storedCart) {
       this.panier = JSON.parse(storedCart); // Convertit la chaîne JSON en objet et l'affecte à la variable this.panier
     }

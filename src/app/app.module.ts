@@ -14,6 +14,11 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RgpdComponent } from './component/rgpd/rgpd.component';
+import { OrderListComponent } from './component/order-list/order-list.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -23,6 +28,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent,
     PanierComponent,
     ConfirmationDialogComponent,
+    RgpdComponent,
+    OrderListComponent
+    
   ],
   entryComponents: [ConfirmationDialogComponent],
   imports: [
