@@ -41,7 +41,6 @@ export class PanierComponent implements OnInit {
 
   // Initialise le composant, récupère le panier et calcule le total
   ngOnInit() {
-    this.loadPanierFromLocalStorage();
     this.panier = this.boxService.getPanier(); // Récupère le panier du service
     this.uniqueCart = this.getRegroupedBox(); // Regroupe les éléments du panier
     this.calculateTotal(); // Calcule le total du panier
@@ -118,12 +117,5 @@ export class PanierComponent implements OnInit {
     // Sauvegarder le tableau des commandes mis à jour dans le localStorage
     localStorage.setItem('orders', JSON.stringify(orders));
   }
-
-  // Charge le panier depuis le localStorage
-  loadPanierFromLocalStorage() {
-    const storedCart = localStorage.getItem('orders'); // Récupère le panier stocké dans le localStorage
-    if (storedCart) {
-      this.panier = JSON.parse(storedCart); // Convertit la chaîne JSON en objet et l'affecte à la variable this.panier
-    }
-  }
+ 
 }
