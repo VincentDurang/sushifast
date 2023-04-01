@@ -19,6 +19,14 @@ export class OrderListComponent implements OnInit {
   loadOrdersFromLocalStorage() {
     this.orders = JSON.parse(localStorage.getItem('orders') || '[]');
   }
+  // Calcule le total d'une commande
+  calculateTotal(order: any): string {
+    let total = 0;
+    for (let item of order.cart) {
+      total += item.prix;
+    }
+    return total.toFixed(2);
+  }
 
   // Efface le localStorage
   clearLocalStorage() {
