@@ -1,0 +1,685 @@
+= Rapport Projet SushiFast
+:description: Rapport du projet SushiFast
+:author: Vincent DURANG, Theo PINCEEL, Anthony DANTAS PAIVA
+:docdate: 02/04/2023
+:doctype: article
+<<<
+
+Fait le 02/04/2023 +
+Par Vincent DURANG, Theo PINCEEL, Anthony DANTAS PAIVA +
+Nom d'équipe : CR7BESTPLAYER
+Lien depot distant : https://github.com/VincentDurang/sushifast +
+Lien de l'application en ligne : https://sushi-fast.web.app/
+
+== Description
+
+Le projet SushiFast consiste à développer une application Front-end en utilisant le framework
+Angular, pour une prise de commande au niveau interne d'un restaurant de sushi par les clients. +
+Nous utiliserons une application Back-end entant qu'API dont les données seront les produits inspirées
+des boxes de l'entreprise SushiShop.
+
+== SushiFast
+
+Pour commencer, nous avons créé plusieurs components : +
+- header.component +
+- home.component +
+- footer.component +
+
+Le component header va contenir la navbar pour aller sur les differents routes (panier, page RGPD et les commandes),
+le component home affiche les produits disponibles. +
+
+Une route est faite pour permettre au client d'aller à l'accueil (home) :
+
+app-routing.modules.ts
+
+[source, javascript]
+----
+import { HomeComponent } from './component/home/home.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+
+----
+
+header.component
+
+[source,html]
+----
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            aria-current="page"
+            routerLink="/"
+            routerLinkActive="active"
+            >Accueil</a>
+        </li>
+----
+
+vu : +
+
+image::navbarhome.png[]
+
+Ensuite nous devons récupéré les données de l'API afin de les mettre dans une liste pour réaliser une boucle dans le
+component home.
+
+Avant de faire cela nous devons, au préalable : +
+
+- Faire un environment qui contient, environment.development.ts et environment.ts +
+
+environment.ts
+
+[source, javascript]
+----
+
+export const environment = {
+production: true,
+apiBaseUrl: 'https://quizbe.org/',
+apiImageUrl: 'https://quizbe.org/api/image/',
+};
+----
+
+- Crée deux models, Box.ts et iBoxes.ts
+
+Box.ts
+
+[source, javascript]
+----
+import { IBoxs } from "./iBoxes";
+
+export class Box implements IBoxs {
+   constructor(
+       public id: number,
+       public nom: string,
+       public pieces: number,
+       public prix: number,
+       public image: string,
+       public aliments: {
+         nom: string,
+         quantite: number
+       }[],
+       public saveurs: string[]){
+
+       }
+    }
+----
+
+iBoxes.ts
+[source, javascript]
+----
+export interface IBoxs {
+    id: number;
+    nom: string;
+    pieces: number;
+    prix: number;
+    image: string;
+    aliments: {
+      nom: string;
+      quantite: number;
+    }[];
+    saveurs: string[];
+}
+----
+
+- Crée un service, manager-box.service.ts +
+
+manager-box.service.ts
+[source, javascript]
+----
+
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Box } from '../models/Box';
+import { IBoxs } from '../models/iBoxes';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ManagerBoxService {
+  boxes!: Box[]; // Liste des boxes
+  cart: Box[] = []; // Liste des boxes dans le panier
+
+  // Injection du service HttpClient dans le service
+  constructor(private http: HttpClient) {}
+
+  // Récupère toutes les boxes depuis l'API
+  getAllBoxes(): Observable<any> {
+    return this.http.get(environment.apiBaseUrl + 'api/boxes'); // Envoie une requête GET à l'API pour récupérer les boxes
+  }
+
+----
+
+Nous avons implementés une méthode getAllBoxes() pour récupérer la totalité des boxes de l'API.
+
+Nous devons crée une liste puis utiliser un ngOnInit pour passer les données de l'api dedans. +
+
+home.components
+
+[source, javascript]
+----
+
+ boxes: Box[] = []; // Liste des boxes
+  imageLink: string = environment.apiImageUrl; // Lien vers les images des boxes
+
+  // Injection du service ManagerBoxService dans le composant
+  constructor(private boxService: ManagerBoxService) {}
+
+  // Méthode appelée lors de l'initialisation du composant
+  ngOnInit() {
+    this.boxService.getAllBoxes().subscribe((data) => { // Récupère toutes les boxes depuis le service
+      this.boxes = data; // Affecte les données récupérées à la variable this.boxes
+    });
+  }
+
+----
+
+Nous pouvons maintenant appeler cette liste dans la html home, nous ferons une boucle avec ngFor. +
+
+home.component.html
+
+[source,html]
+----
+        <div class="col mb-5" *ngFor="let box of boxes; let i = index">
+          <div class="card text-dark bg-dark-footerLess mb-3">
+            <!-- Product image-->
+            <div
+              class="portfolio-item mx-auto"
+              data-bs-toggle="modal"
+              [attr.data-bs-target]="'#modal' + i"
+            >
+              <img
+                class="card-img-top"
+                src="{{ imageLink }}{{ box.image }}"
+                alt="..."
+              />
+            </div>
+                <div class="text-light">
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <h6 class="fw-bolder">{{ box.nom }}</h6>
+                  <!-- Product price-->
+                  {{ box.prix }}€
+                </div>
+              </div>
+            </div>
+
+----
+vu +
+
+image::boucle.png[]
+
+Pour afficher les détails des produits, nous utilisons les principes de modal,
+quand le client clique sur le produit les détails apparait.
+
+[source,html]
+----
+
+ <div
+              class="modal fade"
+              [attr.id]="'modal' + i"
+              tabindex="-1"
+              aria-labelledby="'modal' + i"
+              aria-hidden="true"
+            >
+              <!-- <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1" aria-hidden="true"> -->
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header border-0 bg-light">
+                    <button
+                      class="btn-close"
+                      type="button"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body text-center pb-5">
+                    <div class="container">
+                      <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                          <!-- Modal - Title-->
+                          <h2 class="h2">Détails :</h2>
+                          <!-- Icon Divider-->
+                          <div class="divider-custom">
+                            <div class="divider-custom-line"></div>
+                            <div class="divider-custom-icon">
+                              <i class="fas fa-star"></i>
+                            </div>
+                            <div class="divider-custom-line"></div>
+                          </div>
+                          <!-- Portfolio Modal - Image-->
+                          <!--<img class="img-fluid rounded mb-5" src="" alt="..." />-->
+                          <!-- Portfolio Modal - Text-->
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Nombre de piéces:</h5>
+                              <p class="card-text">{{ box.pieces }}</p>
+                            </div>
+                          </div>
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Saveurs :</h5>
+                              <p class="card-text">{{ box.saveurs }}</p>
+                            </div>
+                          </div>
+
+                          <br />
+
+                          <h4 class="h3">Aliments :</h4>
+
+                          <div *ngFor="let aliment of box.aliments">
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ aliment.nom }}</h5>
+                                <p class="card-text">
+                                  Nombre : {{ aliment.quantite }}
+                                </p>
+                              </div>
+                            </div>
+
+----
+
+vu : +
+
+image::details.png[]
+
+== Panier
+
+La prochaine étape est d'introduire le panier, nous devons donc implémenter un nouveau component (panier.component). +
+
+Nous avons fait une méthode dans le home.component.ts qui récupére la liste et l'envoie dans le component du panier quand le client clique sur le produit choisi.+
+
+Voici la methode : +
+
+home.component.ts
+
+[source, javascript]
+----
+ // Méthode pour ajouter une box au panier
+  addToPanier(box: Box) {
+    console.log('ajout panier'); // Affiche un message dans la console
+    this.boxService.addToPanier(box); // Appelle la méthode addToCart du service avec la box en paramètre
+  }
+----
+
+manager-box.service.ts
+[source, javascript]
+----
+// Ajoute une box au panier
+  addToPanier(box: Box) {
+    this.cart.push(box); // Ajoute la box à la liste du panier
+  }
+----
+
+home.component.html
+
+[source,html]
+----
+                <button
+                    type="button"
+                    class="btn bg-amazon custom-btn"
+                    (click)="addToPanier(box)">
+                    <a>Ajouter au panier</a>
+                  </button>
+----
+
+vu :
+
+image::ajoutpanier.png[]
+
+Le procécuse d'affigage des produits dans le panier est le meme que celui du home (utilisation de ngFor). +
+Après avoir envoyé la box dans le service ManagerBoxService nous recupérons grace à la méthode getPanier,
+
+manager-box.service.ts
+[source, javascript]
+----
+// Récupère le contenu du panier
+  getPanier(): Box[] {
+    return this.cart; // Retourne la liste du panier
+  }
+----
+
+Nous l'appelons dans un ngOnInit() qui l'envoie dans une liste +
+
+panier.component.ts
+[source, javascript]
+----
+ // Initialise le composant, récupère le panier et calcule le total
+  ngOnInit() {
+    this.loadPanierFromLocalStorage();
+    this.panier = this.boxService.getPanier(); // Récupère le panier du service
+    this.uniqueCart = this.getRegroupedBox(); // Regroupe les éléments du panier
+    this.calculateTotal(); // Calcule le total du panier
+  }
+----
+
+Nous avons implémenté deux méthodes, getRegroupedBox() pour éviter d'afficher plusieurs fois le meme produits et calculateTotal pour calculer le prix total. +
+
+panier.component.ts
+[source, javascript]
+----
+
+// Calcule le total du panier
+  calculateTotal() {
+    this.total = 0;
+    for (let box of this.panier) {
+      this.total += box.prix; // Ajoute le prix de chaque box au total
+    }
+    this.total = parseFloat(this.total.toFixed(2)); // Arrondit le total à deux décimales
+  }
+
+  // Regroupe les éléments du panier en fonction de leur ID
+  getRegroupedBox(): Box[] {
+    return this.panier.filter(
+      (value, index, array) =>
+        array.findIndex((find) => find.id === value.id) === index // Filtrer les éléments uniques par ID
+    );
+  }
+----
+
+Pour savoir combien, il y a de meme boxes nous devons implémenter une méthode qui compte les occurrences dans le panier et ensuite l'afficher pour la boxe en question.
+
+panier.component.ts
+[source, javascript]
+----
+
+  // Compte le nombre d'occurrences d'une box spécifique dans le panier
+  countOccurrences(box: Box): number {
+    return this.panier.reduce((nbBox, occBox) => {
+      if (occBox.id === box.id) {
+        // Si l'ID de la box actuelle correspond à l'ID recherché
+        return nbBox + 1; // Incrémente le compteur
+      }
+      return nbBox; // Sinon, retourne la valeur actuelle du compteur
+    }, 0);
+  }
+----
+
+panier.component.html
+
+[source,html]
+----
+<button
+    class="btn btn-secondary">
+        {{ countOccurrences(box) }}
+</button>
+----
+
+Et l'affichage du prix des meme box
+
+panier.component.html
+[source,html]
+----
+<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+    <h5 class="mb-0">
+        {{ box.prix * countOccurrences(box) | number : "1.2-2" }} €
+    </h5>
+</div>
+----
+
+Pour que le client puisse ajouter ou supprimer une boxe, nous avons implémenté les méthodes suivantes :
+
+[source, javascript]
+----
+// Ajoute une box au panier
+  addToPanier(box: Box) {
+    this.panier.push(box); // Ajoute la box à la liste du panier
+    this.uniqueCart = this.getRegroupedBox(); // Met à jour la liste des boxes uniques
+    this.calculateTotal(); // Recalcule le total
+  }
+
+// Supprime une box du panier en fonction de son ID
+  removeFromPanier(id: number) {
+    const index = this.panier.findIndex((box) => box.id === id); // Trouve l'index de la box avec l'ID spécifié
+    if (index > -1) {
+      this.panier.splice(index, 1); // Supprime la box de l'index trouvé
+      this.calculateTotal(); // Recalcule le total
+    }
+    // Vérifie si le nombre d'occurrences est 0 après la suppression
+    const box = this.uniqueCart.find((b) => b.id === id); // Trouve la box avec l'ID spécifié
+    if (box && this.countOccurrences(box) === 0) {
+      this.uniqueCart = this.uniqueCart.filter((b) => b.id !== id); // Supprime la box si le nombre d'occurrences est 0
+    }
+  }
+
+----
+
+Deux boutons sont créés dans la vu qui appelle ces 2 méthodes :
+
+[source,html]
+----
+<button class="btn btn-success me-3" (click)="addToPanier(box)">
+    Ajouter
+</button>
+    <button class="btn btn-danger" (click)="removeFromPanier(box.id)">
+    Supprimer
+</button>
+----
+
+Nous affichons le total du prix du panier, le total rendu par la méthode calculateTotal() est ainsi dans la valeur total.
+[source,html]
+----
+<p class="lead fw-normal mb-2">
+    Total: <strong>{{ total }} €</strong>
+</p>
+----
+
+vu :
+
+image::panier.png[]
+
+== Commande
+
+Le client doit valider sa commande, pour cela nous avons implémenté un systeme de dialog qui consiste juste à confirmer.
+La methode ajouter est la suivante :
+
+[source, javascript]
+----
+
+  // Ouvre le dialogue de confirmation pour valider la commande
+  openConfirmationDialog() {
+    if (this.panier.length === 0) {
+      // Si le panier est vide, afficher un message d'erreur
+      alert('Votre panier est vide, vous ne pouvez pas passer de commande.');
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result)
+      if (result) {
+        this.savePanierToLocalStorage();
+        this.boxService.clearPanier(); // Vide le panier
+        this.panier = []; // Met à jour la variable `panier` dans le composant
+        this.uniqueCart = []; // Met à jour la variable `uniqueCart` dans le composant
+        this.total = 0; // Réinitialise le total
+      }
+    });
+  }
+
+----
+
+vu :
+
+image::dialog.png[]
+
+Si le result est positif alors tout est remis à zero et méthode savePanierToLocalStorage() est appelé :
+
+[source, javascript]
+----
+// Sauvegarde le panier dans le localStorage
+  savePanierToLocalStorage() {
+    // Récupérer les commandes existantes du localStorage
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+    if (this.panier.length > 0) {
+      // Créer un nouvel objet de commande avec un identifiant unique et le contenu du panier
+      let newOrder = {
+        id: this.generateUniqueId(),
+        cart: this.panier,
+      };
+      console.log(this.generateUniqueId());
+
+      // Ajouter la nouvelle commande au tableau des commandes
+      orders.push(newOrder);
+    }
+    // Sauvegarder le tableau des commandes mis à jour dans le localStorage
+    localStorage.setItem('orders', JSON.stringify(orders));
+  }
+----
+
+Nous générons une id pour chaque commande avec cette méthode :
+
+[source, javascript]
+----
+generateUniqueId() {
+    return new Date().getTime().toString();
+  }
+----
+
+Ensuite pour afficher les commandes en cours (à la cuisine), le order-list.component pour role de gérer les commandes.
+Récupére le localStorage dans une liste puis l'affiche dans la vu, 2 autre méthode sont ajouter une pour calculer le prix de la commande et une autre pour effacer le localStorage :
+
+
+order-list.component.ts
+
+[source, javascript]
+----
+
+export class OrderListComponent implements OnInit {
+  orders: any[] = [];
+  imageLink: string = environment.apiImageUrl;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.loadOrdersFromLocalStorage();
+  }
+
+  loadOrdersFromLocalStorage() {
+    this.orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  }
+  // Calcule le total d'une commande
+  calculateTotal(order: any): string {
+    let total = 0;
+    for (let item of order.cart) {
+      total += item.prix;
+    }
+    return total.toFixed(2);
+  }
+
+  // Efface le localStorage
+  clearLocalStorage() {
+    localStorage.removeItem('orders');
+    this.orders = []; // Met à jour la liste des commandes
+  }
+}
+----
+
+order-list.component.html
+
+[source,html]
+----
+<div class="container h-100 py-5">
+  <div class="col-10">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-normal mb-0 text-black">Commandes :</h3>
+      <button class="btn btn-outline-danger" (click)="clearLocalStorage()">Effacer le localStorage</button>
+    </div>
+    <hr />
+    <div *ngIf="orders.length > 0; else noOrders">
+      <div class="card rounded-3 mb-4" *ngFor="let order of orders">
+        <div class="card-header">
+          <h4>Commande ID: {{ order.id }} ({{ calculateTotal(order) }}€)</h4>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li *ngFor="let item of order.cart">
+              <img class="card-img-top" src="{{ imageLink }}{{ item.image }}" alt="..." style="width: 100px; height: auto;" />
+              {{ item.nom }} - {{ item.prix }} €
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noOrders>
+  <p>Aucune commande disponible.</p>
+</ng-template>
+----
+
+vu :
+
+image::commande.png[]
+
+=== Page RGPD
+
+Une nouvelle page et route sont créés afin de contenir la politique de confidentialité de SushiFast (pour une commande en ligne).
+
+Voici le texte de la page RGPD
+
+"La collecte de vos données personnelles en rapport au commande en ligne de SushiFast permet de proposer un meilleur service, sur la conformité au RGPD ainsi que nos offres de produits et de services, la base légale est l’article 6.1 b du règlement européen en matière de protection des données personnelles , “le traitement est nécessaire à l'exécution d'un contrat auquel la personne concernée est partie ou à l'exécution de mesures précontractuelles prises à la demande de celle-ci;”
+
+La destination de vos données en ligne sont le responsables de traitement, du service internes de SushiFast, (Vincent DURANG, Theo PINCEEL, Anthony DANTAS PAIVA) l'article 4.7 “ «responsable du traitement», la personne physique ou morale, l'autorité publique, le service ou un autre organisme qui, seul ou conjointement avec d'autres, détermine les finalités et les moyens du traitement; lorsque les finalités et les moyens de ce traitement sont déterminés par le droit de l'Union ou le droit d'un État membre, le responsable du traitement peut être désigné ou les critères spécifiques applicables à sa désignation peuvent être prévus par le droit de l'Union ou par le droit d'un État membre;”
+
+La durée de traitement des données est limitée au temps pendant lequel vous êtes inscrit à nos services (article 13.2). La fourniture des données n’est pas obligatoire (article 13.2.e)."
+
+== Diagramme des cas d'utilisation
+
+----
+@startuml
+left to right direction
+actor "Client" as fc
+package SushiFast {
+usecase "Consulter les box" as UC1
+usecase "Panier" as UC2
+usecase "Consulter details" as UC5
+usecase "Commande" as UC3
+usecase "RGPD" as UC4
+}
+package Cuisine {
+actor Chef as c
+}
+
+fc --> UC1
+fc --> UC2
+fc --> UC3
+fc --> UC4
+fc --> UC5
+UC3 --> c
+UC2 --> UC3
+
+@enduml
+----
+
+image::img.png[]
+
+== Interface JSON
+
+----
+export interface IBoxs {
+    id: number;
+    nom: string;
+    pieces: number;
+    prix: number;
+    image: string;
+    aliments: {
+      nom: string;
+      quantite: number;
+    }[];
+    saveurs: string[];
+}
+----
+== Conclusion
+
+Ce projet de création d'application SushiFast, nous a permis de mieux comprendre le fonctionnement du Framwork Angular.
+Cela dit, nous avons pas eu le temps de réaliser les scenarios De Evil-User et les contre-mesures.
+
+
+
