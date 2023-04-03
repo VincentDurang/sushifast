@@ -3,6 +3,7 @@
 :author: Vincent DURANG, Theo PINCEEL, Anthony DANTAS PAIVA
 :docdate: 02/04/2023
 :doctype: article
+:toc:
 <<<
 
 Fait le 02/04/2023 +
