@@ -677,6 +677,20 @@ export interface IBoxs {
     saveurs: string[];
 }
 ----
+
+== Mise en ligne 
+
+Pour heberger l'application, nous avons utiliser l'herberger Firebase, aprés avoir fini la totalité du projet, nous avons réaliser les étapes suivantes : +
+- aller à la racine du projet est mettre cette commande "npm install -g firebase-tools" pour installer les modules de firebases. +
+- Ce connecté à Firebase avec la commande "firebase login" +
+- Maintenant itinitialiser le projet avec Firebase en utilisant la commande "firebase init", aprés le service va proposer ces différents services, il faut choisir "Hosting", aprés suivre les instructions et bien choisir le projet puis répondre "oui" pour "Configure as a single-page app. +
+- Ensuite build le projet avec la commande "ng build --prod" +
+- Pour déployer l'application il faut mettre cet commande "firebase deploy" +
+
+
+
+
+
 == Conclusion
 
 Ce projet de création d'application SushiFast, nous a permis de mieux comprendre le fonctionnement du Framwork Angular.
