@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { Box } from '../models/Box';
 import { IBoxs } from '../models/iBoxes';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +11,8 @@ import { map, Observable } from 'rxjs';
 export class ManagerBoxService {
   boxes!: Box[]; // Liste des boxes
   panier: Box[] = []; // Liste des boxes dans le panier
+  itemCountSource = new BehaviorSubject<number>(0);
+  itemCount$ = this.itemCountSource.asObservable();
 
   // Injection du service HttpClient dans le service
   constructor(private http: HttpClient) {}
@@ -23,16 +25,27 @@ export class ManagerBoxService {
   // Ajoute une box au panier
   addToPanier(box: Box) {
     this.panier.push(box); // Ajoute la box à la liste du panier
+    this.itemCountSource.next(this.panier.length); // Met à jour le compteur d'articles
+  }
+  ajouterCountPanier() {
+    this.itemCountSource.next(this.itemCountSource.value + 1);
+  }
+  deleteCountPanier() {
+    this.itemCountSource.next(this.itemCountSource.value - 1);
+  }
+  cleanCountPanier() {
+    this.itemCountSource.next(0);
   }
 
   // Récupère le contenu du panier
   getPanier(): Box[] {
-    return this.panier; // Retourne la liste du panier
+    return this.panier; // Retourne la liste du panierFf
   }
-  
+
   // Vide le panier
   clearPanier() {
     this.panier = []; // Réinitialise la liste du panier à une liste vide
     return this.panier; // Retourne la liste du panier
   }
+  // manager-box.service.ts
 }

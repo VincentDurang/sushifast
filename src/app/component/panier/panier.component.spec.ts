@@ -8,9 +8,8 @@ describe('PanierComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PanierComponent ]
-    })
-    .compileComponents();
+      declarations: [PanierComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PanierComponent);
     component = fixture.componentInstance;

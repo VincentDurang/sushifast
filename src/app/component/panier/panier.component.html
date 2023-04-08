@@ -17,7 +17,7 @@
                 class="card-img-top"
                 src="{{ imageLink }}{{ box.image }}"
                 alt="..."
-                style="width: 100%; height: auto;"
+                style="width: 100%; height: auto"
               />
             </div>
             <div class="col-md-4 col-lg-4 col-xl-4">
@@ -36,7 +36,10 @@
                 <button class="btn btn-success me-3" (click)="addToPanier(box)">
                   Ajouter
                 </button>
-                <button class="btn btn-danger" (click)="removeFromPanier(box.id)">
+                <button
+                  class="btn btn-danger"
+                  (click)="removeFromPanier(box.id)"
+                >
                   Supprimer
                 </button>
               </div>
@@ -50,15 +53,15 @@
           <p class="lead fw-normal mb-2">
             Total: <strong>{{ total }} €</strong>
           </p>
-
-          <button
-            type="button"
-            class="btn bg-amazon btn-block btn-lg custom-btn"
-            [mat-dialog-close]="true"
-            (click)="openConfirmationDialog()"
-          >
-            Valider la commande
-          </button>
+          <mat-dialog-actions>
+            <button
+              type="button"
+              class="btn bg-amazon btn-block btn-lg custom-btn"
+              (click)="openConfirmationDialog()"
+            >
+              Valider la commande
+            </button>
+          </mat-dialog-actions>
         </div>
       </div>
     </div>

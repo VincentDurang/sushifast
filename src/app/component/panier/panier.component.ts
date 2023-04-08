@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
 import { ManagerBoxService } from 'src/app/service/manager-box.service';
 import { Box } from 'src/app/models/Box';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog.component';
+import { fromEvent } from 'rxjs';
+import { tap, throttleTime, timestamp } from 'rxjs/operators';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-panier',
@@ -11,6 +13,8 @@ import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog.compone
   styleUrls: [],
 })
 export class PanierComponent implements OnInit {
+  @ViewChild('searchInput', { static: true }) searchInput?: ElementRef;
+
   panier: Box[] = [];
   uniqueCart: Box[] = [];
   total: number = 0;
@@ -28,11 +32,11 @@ export class PanierComponent implements OnInit {
       alert('Votre panier est vide, vous ne pouvez pas passer de commande.');
       return;
     }
-  
+
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-  
+
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result)
+      console.log(result);
       if (result) {
         this.savePanierToLocalStorage();
         this.boxService.clearPanier(); // Vide le panier
@@ -40,7 +44,7 @@ export class PanierComponent implements OnInit {
         this.uniqueCart = []; // Met à jour la variable `uniqueCart` dans le composant
         this.total = 0; // Réinitialise le total
       }
-    });    
+    });
   }
 
   // Initialise le composant, récupère le panier et calcule le total
@@ -80,6 +84,7 @@ export class PanierComponent implements OnInit {
 
   // Supprime une box du panier en fonction de son ID
   removeFromPanier(id: number) {
+    this.boxService.deleteCountPanier();
     const index = this.panier.findIndex((box) => box.id === id); // Trouve l'index de la box avec l'ID spécifié
     if (index > -1) {
       this.panier.splice(index, 1); // Supprime la box de l'index trouvé
@@ -94,6 +99,7 @@ export class PanierComponent implements OnInit {
 
   // Ajoute une box au panier
   addToPanier(box: Box) {
+    this.boxService.ajouterCountPanier();
     this.panier.push(box); // Ajoute la box à la liste du panier
     this.uniqueCart = this.getRegroupedBox(); // Met à jour la liste des boxes uniques
     this.calculateTotal(); // Recalcule le total
@@ -104,6 +110,7 @@ export class PanierComponent implements OnInit {
 
   // Sauvegarde le panier dans le localStorage
   savePanierToLocalStorage() {
+    this.boxService.cleanCountPanier()
     // Récupérer les commandes existantes du localStorage
     let orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
@@ -121,5 +128,4 @@ export class PanierComponent implements OnInit {
     // Sauvegarder le tableau des commandes mis à jour dans le localStorage
     localStorage.setItem('orders', JSON.stringify(orders));
   }
- 
 }

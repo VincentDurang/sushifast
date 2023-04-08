@@ -29,7 +29,8 @@ import { OrderListComponent } from './component/order-list/order-list.component'
     PanierComponent,
     ConfirmationDialogComponent,
     RgpdComponent,
-    OrderListComponent
+    OrderListComponent,
+    
     
   ],
   entryComponents: [ConfirmationDialogComponent],
@@ -42,6 +43,7 @@ import { OrderListComponent } from './component/order-list/order-list.component'
     FormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
