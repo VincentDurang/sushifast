@@ -427,11 +427,26 @@ Pour que le client puisse ajouter ou supprimer une boxe, nous avons implémenté
 ----
 // Ajoute une box au panier
   addToPanier(box: Box) {
-    this.panier.push(box); // Ajoute la box à la liste du panier
-    this.uniqueCart = this.getRegroupedBox(); // Met à jour la liste des boxes uniques
-    this.calculateTotal(); // Recalcule le total
-  }
+    const currentTime = Date.now();
+    if (currentTime - this.lastAddToCartTime > 300) {
+      // Vérifie si au moins 2 secondes se sont écoulées depuis le dernier ajout
+      console.log('ajout panier');
+      this.boxService.addToPanier(box);
+      this.lastAddToCartTime = currentTime; //La dernière fois qu'un élément a été ajouté au panier
+    } else {
+      console.log(
+        'Veuillez patienter 0.3 secondes entre chaque ajout au panier.'
+      );
+    }
+----
+La méthode commence par obtenir le temps actuel en utilisant Date.now(), qui retourne le nombre de millisecondes écoulées depuis le 1er janvier 1970 à 00:00:00 UTC.
 
+Ensuite, la méthode vérifie si le temps écoulé depuis le dernier ajout d'un article au panier (this.lastAddToCartTime) est supérieur à 300 millisecondes. Cette condition permet d'éviter que les utilisateurs ajoutent trop rapidement des articles au panier, ce qui pourrait surcharger l'application ou provoquer des problèmes de performance.
+
+Si le temps écoulé depuis le dernier ajout d'un article au panier est supérieur à 300 millisecondes, la méthode procède à l'ajout de l'article au panier et met à jour le timestamp this.lastAddToCartTime avec le temps actuel.
+
+[source, javascript]
+----
 // Supprime une box du panier en fonction de son ID
   removeFromPanier(id: number) {
     const index = this.panier.findIndex((box) => box.id === id); // Trouve l'index de la box avec l'ID spécifié
@@ -619,17 +634,54 @@ vu :
 
 image::commande.png[]
 
-=== Page RGPD
+== Page RGPD
 
-Une nouvelle page et route sont créés afin de contenir la politique de confidentialité de SushiFast (pour une commande en ligne).
+=== Collecte et utilisation des données personnelles
 
-Voici le texte de la page RGPD
+Lorsque vous passez une commande sur notre site, nous recueillons les informations nécessaires pour traiter votre commande, notamment : +
 
-"La collecte de vos données personnelles en rapport au commande en ligne de SushiFast permet de proposer un meilleur service, sur la conformité au RGPD ainsi que nos offres de produits et de services, la base légale est l’article 6.1 b du règlement européen en matière de protection des données personnelles , “le traitement est nécessaire à l'exécution d'un contrat auquel la personne concernée est partie ou à l'exécution de mesures précontractuelles prises à la demande de celle-ci;”
+* Nom et prénom +
+* Adresse e-mail +
+* Adresse de livraison +
+* Numéro de téléphone +
+Nous utilisons ces informations pour : +
 
-La destination de vos données en ligne sont le responsables de traitement, du service internes de SushiFast, (Vincent DURANG, Theo PINCEEL, Anthony DANTAS PAIVA) l'article 4.7 “ «responsable du traitement», la personne physique ou morale, l'autorité publique, le service ou un autre organisme qui, seul ou conjointement avec d'autres, détermine les finalités et les moyens du traitement; lorsque les finalités et les moyens de ce traitement sont déterminés par le droit de l'Union ou le droit d'un État membre, le responsable du traitement peut être désigné ou les critères spécifiques applicables à sa désignation peuvent être prévus par le droit de l'Union ou par le droit d'un État membre;”
+* traiter et livrer votre commande +
+* vous informer de l'état de votre commande +
+* répondre à vos demandes et gérer notre relation avec vous +
+* vous envoyer des offres promotionnelles et des newsletters si vous avez accepté de les recevoir +
+* améliorer nos services et notre site web +
 
-La durée de traitement des données est limitée au temps pendant lequel vous êtes inscrit à nos services (article 13.2). La fourniture des données n’est pas obligatoire (article 13.2.e)."
+=== Partage des données personnelles
+Nous ne vendons ni ne louons vos données personnelles à des tiers. Nous partageons vos données personnelles avec des tiers uniquement dans les situations suivantes : +
+
+* prestataires de services : nous faisons appel à des prestataires de services pour des activités telles que la livraison des commandes, le traitement des paiements et l'envoi d'e-mails marketing. Ces prestataires ont accès aux données personnelles nécessaires pour accomplir leurs tâches, mais ne sont pas autorisés à les utiliser à d'autres fins.
+* respect de la loi : nous pouvons être amenés à divulguer vos données personnelles si la loi nous y oblige ou si nous pensons de bonne foi qu'une telle divulgation est nécessaire pour protéger nos droits, protéger votre sécurité ou celle d'autres personnes, enquêter sur une fraude ou répondre à une demande gouvernementale.
+
+=== Conservation des données
+Nous conservons vos données personnelles aussi longtemps que nécessaire pour remplir les objectifs pour lesquels elles ont été recueillies, sauf si la loi exige une conservation plus longue. Par exemple, nous conservons les informations relatives à vos commandes pendant une durée nécessaire pour répondre à vos questions ou résoudre les litiges.
+
+=== Vos droits en vertu du RGPD
+En tant qu'utilisateur basé dans l'Union européenne, le RGPD vous accorde les droits suivants en ce qui concerne vos données personnelles : +
+
+* droit d'accès : vous avez le droit de savoir quelles données personnelles nous détenons sur vous et de demander une copie de ces données.
+
+* droit de rectification : vous avez le droit de demander la correction de données personnelles inexactes ou incomplètes vous concernant.
+
+* droit à l'effacement : vous avez le droit de demander la suppression de vos données personnelles dans certaines circonstances, par exemple si elles ne sont plus nécessaires aux fins pour lesquelles elles ont été collectées.
+
+* droit à la limitation du traitement : vous avez le droit de demander la limitation du traitement de vos données personnelles dans certaines situations, par exemple lorsque vous contestez l'exactitude des données.
+
+* droit à la portabilité des données : vous avez le droit de recevoir vos données personnelles dans un format structuré, couramment utilisé et lisible par machine, et de les transmettre à un autre responsable du traitement sans entrave.
+
+* droit d'opposition : vous avez le droit de vous opposer au traitement de vos données personnelles à des fins de marketing direct ou lorsque le traitement est basé sur des intérêts légitimes.
+
+* droit de retirer votre consentement : lorsque le traitement de vos données personnelles est basé sur votre consentement, vous avez le droit de retirer ce consentement à tout moment.
+
+=== Sécurité des données
+
+Nous prenons la sécurité de vos données personnelles très au sérieux. Nous avons mis en place des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos données contre la perte, l'utilisation abusive, l'accès non autorisé, la divulgation, l'altération et la destruction. Nous veillons à ce que les prestataires de services avec lesquels nous travaillons respectent également des normes de sécurité élevées pour la protection des données personnelles.
+
 
 == Diagramme des cas d'utilisation
 
@@ -678,23 +730,94 @@ export interface IBoxs {
 }
 ----
 
-== Mise en ligne 
+== Diagramme de séquence
+
+----
+
+@startuml
+
+actor User
+participant HeaderComponent
+participant HomeComponent
+participant PanierComponent
+participant LocalStorage
+participant CommandesComponent
+participant RgpdComponent
+participant ManagerBoxService
+database API
+
+User -> HomeComponent: Demande la liste des boxs
+HomeComponent -> ManagerBoxService: getAllBoxes()
+HomeComponent -> HomeComponent: consulter les détails
+ManagerBoxService -> API: GET /api/boxes
+API --> ManagerBoxService: Liste des boxs
+ManagerBoxService --> HomeComponent: Liste des boxs
+HomeComponent -> HeaderComponent: Mise à jour du itemCount
+HomeComponent -> PanierComponent: ajout de box(s) au panier
+PanierComponent -> PanierComponent: ajustement de la commande (si nécessaire)
+PanierComponent -> LocalStorage: ajout de la commande validée dans le LocalStorage
+LocalStorage -> CommandesComponent: consultation du LocalStorage(commandes validées)
+CommandesComponent-> LocalStorage: suprime le LocalStorage (si nécessaire)
+User -> CommandesComponent: Consultation des commandes validée
+User -> RgpdComponent: Consultation de la politique de confidentialité
+@enduml
+
+----
+
+image::img_2.png[]
+
+== Evil Users
+
+Nous avons étudier deux cas malveillants possibles : +
+
+* Un utilisateur malvaillant peut essayer de saturer le systeme en mettant des articles dans le panier.
+
+voici la contre mesure :
+----
+const currentTime = Date.now();
+    if (currentTime - this.lastAddToCartTime > 300) {
+----
+
+
+- Une autre mesure de sécurité importante consiste à mettre en place une politique de sécurité du contenu (CSP). Une CSP est un mécanisme de sécurité qui aide à prévenir les attaques de type cross-site scripting (XSS) et autres injections de code.
+
+Pour configurer une CSP, vous devez ajouter une balise <meta> dans l'en-tête de votre fichier index.html avec la directive http-equiv="Content-Security-Policy" et les règles de sécurité que vous souhaitez appliquer. Voici un exemple simple de CSP : +
+Cette CSP permet le chargement de ressources (scripts, images, etc.) uniquement à partir du même domaine que l'application ('self'). Les images peuvent également être chargées à partir de sous-domaines d'example.com, et les scripts peuvent être chargés à partir de ajax.googleapis.com. Les styles en ligne sont autorisés à s'exécuter avec 'unsafe-inline'.
+
+Vous pouvez adapter les règles de votre CSP en fonction des besoins de votre application. Pour en savoir plus sur les différentes directives et options, consultez la documentation de Content Security Policy.
+
+
+
+
+
+== Mise en ligne
 
 Pour heberger l'application, nous avons utiliser l'herberger Firebase, aprés avoir fini la totalité du projet, nous avons réaliser les étapes suivantes : +
+- crée ou se connecter à firebase puis aller sur "Go to console"
+- cliquer sur "Crée un projet"
 - aller à la racine du projet est mettre cette commande "npm install -g firebase-tools" pour installer les modules de firebases. +
 - Ce connecté à Firebase avec la commande "firebase login" +
 - Maintenant itinitialiser le projet avec Firebase en utilisant la commande "firebase init", aprés le service va proposer ces différents services, il faut choisir "Hosting", aprés suivre les instructions et bien choisir le projet puis répondre "oui" pour "Configure as a single-page app. +
 - Ensuite build le projet avec la commande "ng build --prod" +
-- Pour déployer l'application il faut mettre cet commande "firebase deploy" +
-
-
-
-
+- Rajouter le nom de la chemin du dossier dist généré précédemment avec ng build --prod +
+- Pour déployer l'application il faut mettre cette commande "firebase deploy" +
 
 == Conclusion
 
-Ce projet de création d'application SushiFast, nous a permis de mieux comprendre le fonctionnement du Framwork Angular.
-Cela dit, nous avons pas eu le temps de réaliser les scenarios De Evil-User et les contre-mesures.
+Pour conclure, ce projet est une application web de commerce électronique pour une entreprise spécialisée dans les sushis. L'application permet aux utilisateurs de naviguer à travers une liste de produits, de rechercher des articles spécifiques, d'ajouter des articles à leur panier et de passer des commandes. Le panier affiche le nombre d'articles et le total du coût, et les utilisateurs peuvent ajouter ou supprimer des articles avant de finaliser leur commande.
+Le projet a été développé en utilisant Angular, un framework moderne et puissant pour créer des applications web interactives. Il utilise également des services pour gérer les données et les fonctionnalités de l'application, ainsi que des composants pour structurer l'interface utilisateur. Les problèmes rencontrés lors du développement ont été résolus avec succès, en mettant l'accent sur l'amélioration des performances et l'optimisation des fonctionnalités.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
