@@ -781,13 +781,6 @@ const currentTime = Date.now();
 
 - Une autre mesure de sécurité importante consiste à mettre en place une politique de sécurité du contenu (CSP). Une CSP est un mécanisme de sécurité qui aide à prévenir les attaques de type cross-site scripting (XSS) et autres injections de code.
 
-Pour configurer une CSP, vous devez ajouter une balise <meta> dans l'en-tête de votre fichier index.html avec la directive http-equiv="Content-Security-Policy" et les règles de sécurité que vous souhaitez appliquer. Voici un exemple simple de CSP : +
-Cette CSP permet le chargement de ressources (scripts, images, etc.) uniquement à partir du même domaine que l'application ('self'). Les images peuvent également être chargées à partir de sous-domaines d'example.com, et les scripts peuvent être chargés à partir de ajax.googleapis.com. Les styles en ligne sont autorisés à s'exécuter avec 'unsafe-inline'.
-
-Vous pouvez adapter les règles de votre CSP en fonction des besoins de votre application. Pour en savoir plus sur les différentes directives et options, consultez la documentation de Content Security Policy.
-
-
-
 
 
 == Mise en ligne
@@ -799,7 +792,27 @@ Pour heberger l'application, nous avons utiliser l'herberger Firebase, aprés av
 - Ce connecté à Firebase avec la commande "firebase login" +
 - Maintenant itinitialiser le projet avec Firebase en utilisant la commande "firebase init", aprés le service va proposer ces différents services, il faut choisir "Hosting", aprés suivre les instructions et bien choisir le projet puis répondre "oui" pour "Configure as a single-page app. +
 - Ensuite build le projet avec la commande "ng build --prod" +
-- Rajouter le nom de la chemin du dossier dist généré précédemment avec ng build --prod +
+- Rajouter le chemin du dossier dans le fichier firebase.json +
+----
+{
+  "hosting": {
+    "public": "dist/sushifast-app",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+----
+Par exemple changer le chemin au niveau de public pour mettre le votre. +
+
 - Pour déployer l'application il faut mettre cette commande "firebase deploy" +
 
 == Conclusion
