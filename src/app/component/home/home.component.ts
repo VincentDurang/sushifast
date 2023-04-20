@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Box } from 'src/app/models/Box';
+import { IBoxs } from 'src/app/models/iBoxes';
 import { ManagerBoxService } from 'src/app/service/manager-box.service';
-
+import { PanierComponent } from '../panier/panier.component';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,7 +15,8 @@ export class HomeComponent implements OnInit {
   boxes: Box[] = [];
   imageLink: string = environment.apiImageUrl;
   lastAddToCartTime: number = 0; //Ligne pour stocker la dernière fois qu'un élément a été ajouté au panier
-
+  
+  
   constructor(private boxService: ManagerBoxService) {}
 
   ngOnInit() {
@@ -22,6 +24,8 @@ export class HomeComponent implements OnInit {
       this.boxes = data;
     });
   }
+
+
 
   addToPanier(box: Box) {
     const currentTime = Date.now();

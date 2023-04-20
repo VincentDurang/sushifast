@@ -16,14 +16,16 @@ export class PanierComponent implements OnInit {
   @ViewChild('searchInput', { static: true }) searchInput?: ElementRef;
 
   panier: Box[] = [];
+  
   uniqueCart: Box[] = [];
-  total: number = 0;
+  total: number = 0
+  subtotal: number = 0
   imageLink: string = environment.apiImageUrl;
 
   constructor(
     private boxService: ManagerBoxService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   // Ouvre le dialogue de confirmation pour valider la commande
   openConfirmationDialog() {
@@ -56,10 +58,18 @@ export class PanierComponent implements OnInit {
 
   // Calcule le total du panier
   calculateTotal() {
-    this.total = 0;
+    
     for (let box of this.panier) {
-      this.total += box.prix; // Ajoute le prix de chaque box au total
+      this.subtotal += box.prix; // Ajoute le prix de chaque box au sous-total
     }
+
+    if (this.panier.length > 10) { // Vérifie si le panier contient plus de 10 articles
+      this.total = this.subtotal * 0.95; // Applique une réduction de 5% sur le sous-total pour obtenir le total avec réduction
+    } else {
+      this.total = this.subtotal; // Si le panier contient 10 articles ou moins, le total est égal au sous-total
+    }
+
+    this.subtotal = parseFloat(this.subtotal.toFixed(2)); // Arrondit le sous-total à deux décimales
     this.total = parseFloat(this.total.toFixed(2)); // Arrondit le total à deux décimales
   }
 
@@ -127,5 +137,39 @@ export class PanierComponent implements OnInit {
     }
     // Sauvegarder le tableau des commandes mis à jour dans le localStorage
     localStorage.setItem('orders', JSON.stringify(orders));
+  }
+
+
+  isPanierAboveTen() {
+    if (this.panier.length > 10){
+      return true
+    }else{
+      return false
+    }
+  }
+
+
+  getAllFlavor(boxes: Box[]){
+    var flavors = [];
+    for (var i = 0; i < boxes.length; i++) {
+      for (var j = 0; j < boxes[i].saveurs.length; j++) {
+        if (flavors.indexOf(boxes[i].saveurs[j]) === -1) {
+          flavors.push(boxes[i].saveurs[j]);
+        }
+      }
+    }
+    return flavors
+  };
+
+  getUniqueSaveurs(): string[] {
+    const saveurs: string[] = [];
+    this.panier.forEach((box) => {
+      box.saveurs.forEach((saveur) => {
+        if (saveurs.indexOf(saveur) === -1) {
+          saveurs.push(saveur);
+        }
+      });
+    });
+    return saveurs;
   }
 }

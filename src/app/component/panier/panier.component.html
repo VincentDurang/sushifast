@@ -51,8 +51,19 @@
       <div class="card">
         <div class="card-body">
           <p class="lead fw-normal mb-2">
-            Total: <strong>{{ total }} €</strong>
+            Total: <strong>{{ subtotal }} €</strong>
+            Total avec reduction: <strong>{{ total }} €</strong>
+            
           </p>
+          <h5 class="mb-0">
+            
+          </h5>
+          <div class="container mt-3">
+            <h3>Saveurs dans le panier :</h3>
+            <ul>
+              <li *ngFor="let saveur of getUniqueSaveurs()">{{ saveur }}</li>
+            </ul>
+          </div>
           <mat-dialog-actions>
             <button
               type="button"
